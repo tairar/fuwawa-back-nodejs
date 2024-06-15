@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const pg = require('pg');
+const cors = require('cors');
 
 const isDbLocal = ((process.env.PGHOST || "localhost") === "localhost");
 
@@ -20,6 +21,8 @@ function getConfig() {
         };
     }
 }
+
+app.use(cors());
 
 const pool = new pg.Pool(getConfig());
 
@@ -59,7 +62,7 @@ app.post('/regist', (req,res) => {
 });
 
 app.listen(port, () => {
-	console.log(`繋がったよ:http://localhost:${port}`)
+	console.log(`繋がったよ`)
 });
 
 app.use(express.json())
