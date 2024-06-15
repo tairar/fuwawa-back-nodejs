@@ -3,13 +3,25 @@ const app = express();
 const port = 3000;
 const pg = require('pg');
 
-var pool = new pg.Pool({
-	database: 'mydb',
-	user: 'postgres',
-	password: 'PASSWORD',
-	host: 'localhost',
-	port: 5432,
-});
+const isDbLocal = ((process.env.PGHOST || "localhost") === "localhost");
+
+function getConfig() {
+    if (isDbLocal) {
+        return {
+            max: 10
+        };
+
+    } else {
+        return {
+            max: 10,
+            ssl: {
+                rejectUnauthorized: false,
+            }
+        };
+    }
+}
+
+const pool = new pg.Pool(getConfig());
 
 app.get('/', (req, res) => {
 	pool.connect( function(err, client) {
