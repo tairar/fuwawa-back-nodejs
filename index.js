@@ -35,6 +35,29 @@ app.get('/', (req, res) => {
 	});
 });
 
+app.use(express.json())
+app.post('/regist', (req,res) => {
+	var query = {
+		text: 'INSERT INTO books (title, genre, text) VALUES($1, $2, $3)',
+		values: [req.body.title, req.body.genre, req.body.text],
+	};
+
+	pool.connect( function(err, client) {
+		if (err) {
+			res.send(err);
+		} else {
+			client
+				.query(query)
+				.then(() => {
+					res.json("Data Created.");
+				})
+				.catch((e) => {
+					console.error(e.stack);
+				});
+		}
+	});
+});
+
 app.listen(port, () => {
 	console.log(`繋がったよ:http://localhost:${port}`)
 });
