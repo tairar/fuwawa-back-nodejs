@@ -38,8 +38,8 @@ app.get('/', (req, res) => {
 app.use(express.json())
 app.post('/regist', (req,res) => {
 	var query = {
-		text: 'INSERT INTO books (title, genre, text) VALUES($1, $2, $3)',
-		values: [req.body.title, req.body.genre, req.body.text],
+		text: 'INSERT INTO books (title, genre, content) VALUES($1, $2, $3)',
+		values: [req.body.title, req.body.genre, req.body.content],
 	};
 
 	pool.connect( function(err, client) {
