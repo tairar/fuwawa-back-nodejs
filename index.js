@@ -9,12 +9,12 @@ const isDbLocal = ((process.env.PGHOST || "localhost") === "localhost");
 function getConfig() {
     if (isDbLocal) {
         return {
-            max: 10
+            max: 50
         };
 
     } else {
         return {
-            max: 10,
+            max: 50,
             ssl: {
                 rejectUnauthorized: false,
             }
