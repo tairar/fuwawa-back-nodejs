@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 		} else {
 			client.query('SELECT * FROM books', function (err, result) {
 				res.json(result.rows);
+				console.log("GET accepted");
 			});
 		}
 	});
@@ -53,6 +54,7 @@ app.post('/regist', (req,res) => {
 				.query(query)
 				.then(() => {
 					res.json("Data Created.");
+					console.log("Registered new bookdata.");
 				})
 				.catch((e) => {
 					console.error(e.stack);
