@@ -41,14 +41,19 @@ app.get('/', (req, res) => {
 
 
 app.get('/data/:id', (req, res) => {
+	const id = req.params.id;
+	console.log(id);
+	var query = {
+		text: 'SELECT * FROM books WHERE id = $1',
+		values: [id],
+	};
 	pool.connect( function(err, client) {
-		const id = req.params.id;
 		if (err) {
 			res.send(err);
 		} else {
-			client.query('SELECT * FROM books WHERE id = ?', [id], function (err, result) {
+			client.query(query, function (err, result) {
 				res.json(result.rows);
-				console.log("GET accepted data:${id} returned.");
+				console.log(`GET accepted data:${id} returned`);
 			});
 		}
 	});
