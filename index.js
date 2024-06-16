@@ -39,6 +39,21 @@ app.get('/', (req, res) => {
 	});
 });
 
+
+app.get('/data/:id', (req, res) => {
+	pool.connect( function(err, client) {
+		const id = req.params.id;
+		if (err) {
+			res.send(err);
+		} else {
+			client.query('SELECT * FROM books WHERE id = ?', [id], function (err, result) {
+				res.json(result.rows);
+				console.log("GET accepted data:${id} returned.");
+			});
+		}
+	});
+});
+
 app.use(express.json())
 app.post('/regist', (req,res) => {
 	var query = {
