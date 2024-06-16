@@ -34,7 +34,7 @@ app.get('/', async (req, res) => {
     try {
         const client = await pool.connect();
         try {
-            const result = await client.query('SELECT * FROM books');
+            const result = await client.query('SELECT id, title FROM books');
             res.json(result.rows);
             console.log("GET accepted");
         } finally {
