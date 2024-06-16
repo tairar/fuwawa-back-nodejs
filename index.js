@@ -48,7 +48,6 @@ app.get('/', async (req, res) => {
 // 指定のidの書籍情報を取得
 app.get('/data/:id', async (req, res) => {
     const id = req.params.id;
-    console.log(id);
     const query = {
         text: 'SELECT * FROM books WHERE id = $1',
         values: [id],
@@ -58,7 +57,28 @@ app.get('/data/:id', async (req, res) => {
         try {
             const result = await client.query(query);
             res.json(result.rows);
-            console.log(`GET accepted data:${id} returned`);
+            console.log(`GET accepted data[id=${id}] returned`);
+        } finally {
+            client.release();
+        }
+    } catch (err) {
+        res.send(err);
+    }
+});
+
+// 指定のジャンルの書籍情報を取得
+app.get('/genre/:value', async (req, res) => {
+    const value = req.params.value;
+    const query = {
+        text: 'SELECT id, title FROM books WHERE genre = $1',
+        values: [value],
+    };
+    try {
+        const client = await pool.connect();
+        try {
+            const result = await client.query(query);
+            res.json(result.rows);
+            console.log(`GET accepted data[genre=${value}] returned`);
         } finally {
             client.release();
         }
